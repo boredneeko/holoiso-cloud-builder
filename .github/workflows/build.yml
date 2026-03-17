@@ -1,0 +1,29 @@
+name: Build HoloISO
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y git archiso btrfs-progs arch-install-scripts
+
+    - name: Build ISO
+      run: |
+        chmod +x build.sh
+        ./build.sh
+
+    - name: Upload ISO
+      uses: actions/upload-artifact@v3
+      with:
+        name: holoiso
+        path: out/
